@@ -8,36 +8,6 @@ var iconPath = "src/compass.png";
 var tray = null;
 var trayFunc = function () {
     tray = new Tray(iconPath);
-    var template = [
-        {
-            label: "File",
-            submenu: [
-                {
-                    label: "Low",
-                    type: "radio",
-                    checked: true
-                },
-                {
-                    label: "High",
-                    type: "radio"
-                },
-            ]
-        },
-        {
-            label: "Video",
-            submenu: [
-                {
-                    label: "1280x720",
-                    type: "radio",
-                    checked: true
-                },
-                {
-                    label: "1920x1080",
-                    type: "radio"
-                },
-            ]
-        },
-    ];
     var contextMenu = Menu.buildFromTemplate([
         {
             label: "File",
@@ -45,6 +15,7 @@ var trayFunc = function () {
                 {
                     label: "Read",
                     type: "normal",
+                    toolTip: "read",
                     click: function () {
                         console.log("Hello read");
                     }
@@ -52,6 +23,7 @@ var trayFunc = function () {
                 {
                     label: "Write",
                     type: "normal",
+                    toolTip: "write",
                     click: function () {
                         console.log("hello write");
                     }
@@ -64,13 +36,40 @@ var trayFunc = function () {
                 {
                     label: "date",
                     type: "normal",
+                    toolTip: "Date",
                     click: function () {
                         console.log(Date.now());
                     }
                 },
                 {
                     label: "Sys Info",
-                    type: "normal"
+                    type: "normal",
+                    toolTip: "System Info",
+                    icon: "src/compass.png",
+                    click: function () {
+                        new electron.Notification({
+                            title: "System Info",
+                            icon: "src/compass.png",
+                            body: "" + Date.now().toLocaleString(),
+                            subtitle: "System name",
+                            closeButtonText: "End Process"
+                        }).show();
+                    }
+                },
+                {
+                    label: "Open File/Directory",
+                    type: "normal",
+                    toolTip: "Open File/Directory",
+                    icon: "src/compass.png",
+                    click: function () {
+                        var diag = electron.dialog.showOpenDialog({
+                            properties: ["openDirectory", "openFile"],
+                            title: "Open File/Directory"
+                        });
+                        diag.then(function (data) {
+                            console.log(data);
+                        });
+                    }
                 },
             ]
         },

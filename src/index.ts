@@ -9,37 +9,6 @@ let tray = null;
 const trayFunc = (): void => {
   tray = new Tray(iconPath);
 
-  const template: any = [
-    {
-      label: "File",
-      submenu: [
-        {
-          label: "Low",
-          type: "radio",
-          checked: true,
-        },
-        {
-          label: "High",
-          type: "radio",
-        },
-      ],
-    },
-    {
-      label: "Video",
-      submenu: [
-        {
-          label: "1280x720",
-          type: "radio",
-          checked: true,
-        },
-        {
-          label: "1920x1080",
-          type: "radio",
-        },
-      ],
-    },
-  ];
-
   const contextMenu = Menu.buildFromTemplate([
     {
       label: "File",
@@ -47,6 +16,7 @@ const trayFunc = (): void => {
         {
           label: "Read",
           type: "normal",
+          toolTip: "read",
           click: (): void => {
             console.log("Hello read");
           },
@@ -54,6 +24,7 @@ const trayFunc = (): void => {
         {
           label: "Write",
           type: "normal",
+          toolTip: "write",
           click: (): void => {
             console.log("hello write");
           },
@@ -66,6 +37,7 @@ const trayFunc = (): void => {
         {
           label: "date",
           type: "normal",
+          toolTip: "Date",
           click: (): void => {
             console.log(Date.now());
           },
@@ -73,6 +45,32 @@ const trayFunc = (): void => {
         {
           label: "Sys Info",
           type: "normal",
+          toolTip: "System Info",
+          icon: "src/compass.png",
+          click: (): void => {
+            new electron.Notification({
+              title: "System Info",
+              icon: "src/compass.png",
+              body: `${Date.now().toLocaleString()}`,
+              subtitle: "System name",
+              closeButtonText: "End Process",
+            }).show();
+          },
+        },
+        {
+          label: "Open File/Directory",
+          type: "normal",
+          toolTip: "Open File/Directory",
+          icon: "src/compass.png",
+          click: (): void => {
+            const diag = electron.dialog.showOpenDialog({
+              properties: ["openDirectory", "openFile"],
+              title: "Open File/Directory",
+            });
+            diag.then((data) => {
+              console.log(data);
+            });
+          },
         },
       ],
     },
