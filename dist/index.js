@@ -58,6 +58,22 @@ var trayFunc = function () {
                 },
             ]
         },
+        {
+            label: "utility",
+            submenu: [
+                {
+                    label: "date",
+                    type: "normal",
+                    click: function () {
+                        console.log(Date.now());
+                    }
+                },
+                {
+                    label: "Sys Info",
+                    type: "normal"
+                },
+            ]
+        },
     ]);
     tray.setContextMenu(contextMenu);
     tray.setToolTip("Tray App");

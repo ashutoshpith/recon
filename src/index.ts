@@ -60,6 +60,22 @@ const trayFunc = (): void => {
         },
       ],
     },
+    {
+      label: "utility",
+      submenu: [
+        {
+          label: "date",
+          type: "normal",
+          click: (): void => {
+            console.log(Date.now());
+          },
+        },
+        {
+          label: "Sys Info",
+          type: "normal",
+        },
+      ],
+    },
   ]);
   tray.setContextMenu(contextMenu);
   tray.setToolTip("Tray App");
