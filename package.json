@@ -2,7 +2,7 @@
   "name": "recon",
   "productName": "recon",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "System tray",
   "main": "dist/index.js",
   "scripts": {
     "start": "tsc && electron-forge start",
