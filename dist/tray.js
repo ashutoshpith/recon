@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.trayFunc = exports.createNativeImage = void 0;
 const electron_1 = require("electron");
 const opn = require("open");
+const libs_1 = require("./libs");
 const notification_1 = require("./notification");
 let tray = null;
 const iconPath = "src/img/compass.png";
@@ -112,6 +113,18 @@ const trayFunc = () => {
                             console.log(data);
                         });
                     },
+                },
+                {
+                    label: "power",
+                    submenu: [
+                        {
+                            label: "powerInfo",
+                            click: async () => {
+                                const data = await new libs_1.ReconPowerMonitor().powerInfo();
+                                console.log(data);
+                            },
+                        },
+                    ],
                 },
             ],
         },

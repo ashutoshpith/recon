@@ -1,5 +1,6 @@
 import { app, Tray, Menu, nativeImage, dialog, Notification } from "electron";
 import * as opn from "open";
+import { ReconPowerMonitor } from "./libs";
 import { NotificationAlert } from "./notification";
 let tray = null;
 // public readonly tray: Tray;
@@ -112,6 +113,18 @@ export const trayFunc = () => {
               console.log(data);
             });
           },
+        },
+        {
+          label: "power",
+          submenu: [
+            {
+              label: "powerInfo",
+              click: async (): Promise<void> => {
+                const data = await new ReconPowerMonitor().powerInfo();
+                console.log(data);
+              },
+            },
+          ],
         },
       ],
     },

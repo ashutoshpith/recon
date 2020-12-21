@@ -5,7 +5,7 @@
   "description": "System tray",
   "main": "dist/index.js",
   "scripts": {
-    "start": "tsc && electron-forge start",
+    "start": "tsc && electron-forge start --watch",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
@@ -59,6 +59,7 @@
   },
   "dependencies": {
     "electron-squirrel-startup": "^1.0.0",
-    "open": "^7.3.0"
+    "open": "^7.3.0",
+    "watch": "^1.0.2"
   }
 }
