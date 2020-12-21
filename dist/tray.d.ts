@@ -1,7 +1,3 @@
-import { Tray } from "electron";
-export declare class TrayMenu {
-    readonly tray: Tray;
-    private iconPath;
-    constructor();
-    createNativeImage(): Electron.NativeImage;
-}
+/// <reference types="electron" />
+export declare const createNativeImage: () => Electron.NativeImage;
+export declare const trayFunc: () => void;
