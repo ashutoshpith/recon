@@ -6,16 +6,16 @@ const opn = require("open");
 const notification_1 = require("./notification");
 let tray = null;
 const iconPath = "src/img/compass.png";
-const createNativeImage = () => {
-    const path = `${electron_1.app.getAppPath()}${iconPath}`;
+const firefoxPath = "src/img/firefox.png";
+const createNativeImage = (iconPath) => {
+    const path = iconPath;
     const image = electron_1.nativeImage.createFromPath(path);
     image.setTemplateImage(true);
     return image;
 };
 exports.createNativeImage = createNativeImage;
 const trayFunc = () => {
-    exports.createNativeImage();
-    tray = new electron_1.Tray(iconPath);
+    tray = new electron_1.Tray(exports.createNativeImage(iconPath));
     const contextMenu = electron_1.Menu.buildFromTemplate([
         {
             label: "File",
@@ -54,22 +54,32 @@ const trayFunc = () => {
                     submenu: [
                         {
                             label: "firefox",
-                            click: () => {
-                                opn("www.google.com", { app: ["firefox"] });
+                            click: async () => {
+                                const check = await opn("www.google.com", { app: ["firefox"] });
+                                if (!check.pid) {
+                                    new notification_1.NotificationAlert({
+                                        title: "Firefox Open",
+                                        body: "Not Found Command",
+                                    });
+                                }
                                 new notification_1.NotificationAlert({
                                     title: "Firefox Open",
-                                    icon: "src/img/compass.png",
                                     body: "Browser Firefox opened",
                                 });
                             },
                         },
                         {
                             label: "chrome",
-                            click: () => {
-                                opn("", { app: ["chromium"] });
+                            click: async () => {
+                                const check = await opn("", { app: ["chromium"] });
+                                if (!check.pid) {
+                                    new notification_1.NotificationAlert({
+                                        title: "Chrome Open",
+                                        body: "Browser Chrome Command Not Found",
+                                    });
+                                }
                                 new notification_1.NotificationAlert({
                                     title: "Chrome Open",
-                                    icon: "src/img/compass.png",
                                     body: "Browser Chrome opened",
                                 });
                             },
@@ -80,11 +90,9 @@ const trayFunc = () => {
                     label: "Sys Info",
                     type: "normal",
                     toolTip: "System Info",
-                    icon: "src/img/compass.png",
                     click: () => {
                         new electron_1.Notification({
                             title: "System Info",
-                            icon: "src/img/compass.png",
                             body: `${Date.now().toLocaleString()}`,
                             subtitle: "System name",
                             closeButtonText: "End Process",
@@ -95,7 +103,6 @@ const trayFunc = () => {
                     label: "Open File/Directory",
                     type: "normal",
                     toolTip: "Open File/Directory",
-                    icon: "src/img/compass.png",
                     click: () => {
                         const diag = electron_1.dialog.showOpenDialog({
                             properties: ["openDirectory", "openFile"],

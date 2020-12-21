@@ -4,17 +4,17 @@ import { NotificationAlert } from "./notification";
 let tray = null;
 // public readonly tray: Tray;
 const iconPath = "src/img/compass.png";
+const firefoxPath = "src/img/firefox.png";
 
-export const createNativeImage = () => {
-  const path = `${app.getAppPath()}${iconPath}`;
+export const createNativeImage = (iconPath: string) => {
+  const path = iconPath;
   const image = nativeImage.createFromPath(path);
   image.setTemplateImage(true);
   return image;
 };
 
 export const trayFunc = () => {
-  createNativeImage();
-  tray = new Tray(iconPath);
+  tray = new Tray(createNativeImage(iconPath));
   const contextMenu = Menu.buildFromTemplate([
     {
       label: "File",
@@ -53,22 +53,33 @@ export const trayFunc = () => {
           submenu: [
             {
               label: "firefox",
-              click: (): void => {
-                opn("www.google.com", { app: ["firefox"] });
+              click: async (): Promise<void> => {
+                const check = await opn("www.google.com", { app: ["firefox"] });
+                if (!check.pid) {
+                  new NotificationAlert({
+                    title: "Firefox Open",
+                    body: "Not Found Command",
+                  });
+                }
+
                 new NotificationAlert({
                   title: "Firefox Open",
-                  icon: "src/img/compass.png",
                   body: "Browser Firefox opened",
                 });
               },
             },
             {
               label: "chrome",
-              click: (): void => {
-                opn("", { app: ["chromium"] });
+              click: async (): Promise<void> => {
+                const check = await opn("", { app: ["chromium"] });
+                if (!check.pid) {
+                  new NotificationAlert({
+                    title: "Chrome Open",
+                    body: "Browser Chrome Command Not Found",
+                  });
+                }
                 new NotificationAlert({
                   title: "Chrome Open",
-                  icon: "src/img/compass.png",
                   body: "Browser Chrome opened",
                 });
               },
@@ -79,11 +90,9 @@ export const trayFunc = () => {
           label: "Sys Info",
           type: "normal",
           toolTip: "System Info",
-          icon: "src/img/compass.png",
           click: (): void => {
             new Notification({
               title: "System Info",
-              icon: "src/img/compass.png",
               body: `${Date.now().toLocaleString()}`,
               subtitle: "System name",
               closeButtonText: "End Process",
@@ -94,7 +103,6 @@ export const trayFunc = () => {
           label: "Open File/Directory",
           type: "normal",
           toolTip: "Open File/Directory",
-          icon: "src/img/compass.png",
           click: (): void => {
             const diag = dialog.showOpenDialog({
               properties: ["openDirectory", "openFile"],
