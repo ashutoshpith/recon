@@ -1,23 +1,21 @@
 "use strict";
-exports.__esModule = true;
-var electron = require("electron");
-var opn = require("open");
-var app = electron.app;
-var Menu = electron.Menu;
-var Tray = electron.Tray;
-var iconPath = "src/compass.png";
-var tray = null;
-var notificationAlert = function (type) {
-    return new electron.Notification({
-        title: type.title,
-        icon: type.icon,
-        body: type.body,
-        closeButtonText: "End Process"
-    }).show();
-};
-var trayFunc = function () {
+Object.defineProperty(exports, "__esModule", { value: true });
+const electron = require("electron");
+const opn = require("open");
+const app = electron.app;
+const Menu = electron.Menu;
+const Tray = electron.Tray;
+const iconPath = "src/compass.png";
+let tray = null;
+const notificationAlert = (type) => new electron.Notification({
+    title: type.title,
+    icon: type.icon,
+    body: type.body,
+    closeButtonText: "End Process",
+}).show();
+const trayFunc = () => {
     tray = new Tray(iconPath);
-    var contextMenu = Menu.buildFromTemplate([
+    const contextMenu = Menu.buildFromTemplate([
         {
             label: "File",
             submenu: [
@@ -25,19 +23,19 @@ var trayFunc = function () {
                     label: "Read",
                     type: "normal",
                     toolTip: "read",
-                    click: function () {
+                    click: () => {
                         console.log("Hello read");
-                    }
+                    },
                 },
                 {
                     label: "Write",
                     type: "normal",
                     toolTip: "write",
-                    click: function () {
+                    click: () => {
                         console.log("hello write");
-                    }
+                    },
                 },
-            ]
+            ],
         },
         {
             label: "utility",
@@ -46,68 +44,68 @@ var trayFunc = function () {
                     label: "date",
                     type: "normal",
                     toolTip: "Date",
-                    click: function () {
+                    click: () => {
                         console.log(Date.now());
-                    }
+                    },
                 },
                 {
                     label: "browser",
                     submenu: [
                         {
                             label: "firefox",
-                            click: function () {
+                            click: () => {
                                 opn("www.google.com", { app: ["firefox"] });
                                 notificationAlert({
                                     title: "Firefox Open",
                                     icon: "src/compass.png",
-                                    body: "Browser Firefox opened"
+                                    body: "Browser Firefox opened",
                                 });
-                            }
+                            },
                         },
                         {
                             label: "chrome",
-                            click: function () {
+                            click: () => {
                                 opn("", { app: ["chromium"] });
                                 notificationAlert({
                                     title: "Chrome Open",
                                     icon: "src/compass.png",
-                                    body: "Browser Chrome opened"
+                                    body: "Browser Chrome opened",
                                 });
-                            }
+                            },
                         },
-                    ]
+                    ],
                 },
                 {
                     label: "Sys Info",
                     type: "normal",
                     toolTip: "System Info",
                     icon: "src/compass.png",
-                    click: function () {
+                    click: () => {
                         new electron.Notification({
                             title: "System Info",
                             icon: "src/compass.png",
-                            body: "" + Date.now().toLocaleString(),
+                            body: `${Date.now().toLocaleString()}`,
                             subtitle: "System name",
-                            closeButtonText: "End Process"
+                            closeButtonText: "End Process",
                         }).show();
-                    }
+                    },
                 },
                 {
                     label: "Open File/Directory",
                     type: "normal",
                     toolTip: "Open File/Directory",
                     icon: "src/compass.png",
-                    click: function () {
-                        var diag = electron.dialog.showOpenDialog({
+                    click: () => {
+                        const diag = electron.dialog.showOpenDialog({
                             properties: ["openDirectory", "openFile"],
-                            title: "Open File/Directory"
+                            title: "Open File/Directory",
                         });
-                        diag.then(function (data) {
+                        diag.then((data) => {
                             console.log(data);
                         });
-                    }
+                    },
                 },
-            ]
+            ],
         },
     ]);
     tray.setContextMenu(contextMenu);
@@ -115,7 +113,7 @@ var trayFunc = function () {
     tray.setTitle("Recon");
 };
 app.on("ready", trayFunc);
-app.on("window-all-closed", function () {
+app.on("window-all-closed", () => {
     if (process.platform !== "darwin") {
         app.quit();
     }
