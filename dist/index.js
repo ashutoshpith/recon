@@ -1,11 +1,20 @@
 "use strict";
 exports.__esModule = true;
 var electron = require("electron");
+var opn = require("open");
 var app = electron.app;
 var Menu = electron.Menu;
 var Tray = electron.Tray;
 var iconPath = "src/compass.png";
 var tray = null;
+var notificationAlert = function (type) {
+    return new electron.Notification({
+        title: type.title,
+        icon: type.icon,
+        body: type.body,
+        closeButtonText: "End Process"
+    }).show();
+};
 var trayFunc = function () {
     tray = new Tray(iconPath);
     var contextMenu = Menu.buildFromTemplate([
@@ -40,6 +49,33 @@ var trayFunc = function () {
                     click: function () {
                         console.log(Date.now());
                     }
+                },
+                {
+                    label: "browser",
+                    submenu: [
+                        {
+                            label: "firefox",
+                            click: function () {
+                                opn("www.google.com", { app: ["firefox"] });
+                                notificationAlert({
+                                    title: "Firefox Open",
+                                    icon: "src/compass.png",
+                                    body: "Browser Firefox opened"
+                                });
+                            }
+                        },
+                        {
+                            label: "chrome",
+                            click: function () {
+                                opn("", { app: ["chromium"] });
+                                notificationAlert({
+                                    title: "Chrome Open",
+                                    icon: "src/compass.png",
+                                    body: "Browser Chrome opened"
+                                });
+                            }
+                        },
+                    ]
                 },
                 {
                     label: "Sys Info",
