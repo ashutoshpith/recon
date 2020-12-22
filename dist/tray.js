@@ -115,7 +115,7 @@ const trayFunc = () => {
                     },
                 },
                 {
-                    label: "window",
+                    label: "google window",
                     click: () => {
                         const win = new electron_1.BrowserWindow({
                             height: 600,
@@ -124,6 +124,15 @@ const trayFunc = () => {
                             movable: true,
                         });
                         win.loadURL("https://www.google.com");
+                    },
+                },
+                {
+                    label: "clipboard",
+                    click: () => {
+                        new notification_1.NotificationAlert({
+                            title: "clip board",
+                            body: `${electron_1.clipboard.readText()}`,
+                        });
                     },
                 },
                 {

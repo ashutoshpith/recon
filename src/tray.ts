@@ -6,6 +6,7 @@ import {
   dialog,
   Notification,
   BrowserWindow,
+  clipboard,
 } from "electron";
 import * as opn from "open";
 import { ReconPowerMonitor } from "./libs";
@@ -132,6 +133,15 @@ export const trayFunc = () => {
               movable: true,
             });
             win.loadURL("https://www.google.com");
+          },
+        },
+        {
+          label: "clipboard",
+          click: (): void => {
+            new NotificationAlert({
+              title: "clip board",
+              body: `${clipboard.readText()}`,
+            });
           },
         },
         {
