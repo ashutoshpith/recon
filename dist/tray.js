@@ -115,6 +115,18 @@ const trayFunc = () => {
                     },
                 },
                 {
+                    label: "window",
+                    click: () => {
+                        const win = new electron_1.BrowserWindow({
+                            height: 600,
+                            width: 700,
+                            title: "recon",
+                            movable: true,
+                        });
+                        win.loadURL("https://www.google.com");
+                    },
+                },
+                {
                     label: "power",
                     submenu: [
                         {

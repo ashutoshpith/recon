@@ -19,6 +19,7 @@ export class ReconPowerMonitor {
 
       return "on ac";
     });
+
     return status;
   }
 }

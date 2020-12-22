@@ -1,4 +1,12 @@
-import { app, Tray, Menu, nativeImage, dialog, Notification } from "electron";
+import {
+  app,
+  Tray,
+  Menu,
+  nativeImage,
+  dialog,
+  Notification,
+  BrowserWindow,
+} from "electron";
 import * as opn from "open";
 import { ReconPowerMonitor } from "./libs";
 import { NotificationAlert } from "./notification";
@@ -112,6 +120,18 @@ export const trayFunc = () => {
             diag.then((data) => {
               console.log(data);
             });
+          },
+        },
+        {
+          label: "google window",
+          click: (): void => {
+            const win = new BrowserWindow({
+              height: 600,
+              width: 700,
+              title: "recon",
+              movable: true,
+            });
+            win.loadURL("https://www.google.com");
           },
         },
         {
